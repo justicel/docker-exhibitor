@@ -1,37 +1,33 @@
-FROM debian:7.8
+FROM anapsix/alpine-java:jdk8
 MAINTAINER Secret Sauce Partners, Inc. <operations@sspinc.io>
 
 ENV \
-    ZK_RELEASE="http://www.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz" \
-    EXHIBITOR_POM="https://raw.githubusercontent.com/Netflix/exhibitor/44905c150e648c640f8ef961f388d3972af05947/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml" \
-    # Append "+" to ensure the package doesn't get purged
-    BUILD_DEPS="curl maven openjdk-7-jdk+" \
-    DEBIAN_FRONTEND="noninteractive"
+    ZK_RELEASE="http://archive.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz" \
+    EXHIBITOR_POM="https://raw.githubusercontent.com/Netflix/exhibitor/44905c15/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml"
 
 # Use one step so we can remove intermediate dependencies and minimize size
 RUN \
-    # Install dependencies
-    apt-get update \
-    && apt-get install -y --allow-unauthenticated --no-install-recommends $BUILD_DEPS \
-
-    # Default DNS cache TTL is -1. DNS records, like, change, man.
-    && grep '^networkaddress.cache.ttl=' /etc/java-7-openjdk/security/java.security || echo 'networkaddress.cache.ttl=60' >> /etc/java-7-openjdk/security/java.security \
+    # Install maven
+    wget -O /opt/apache-maven.zip 'http://www.us.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip' \
+    && unzip -d /opt/ /opt/apache-maven.zip \
+    && ln -s /opt/apache-maven-3.3.9 /opt/maven \
+    && ln -s /opt/maven/bin/mvn /usr/bin \
 
     # Install ZK
-    && curl -Lo /tmp/zookeeper.tgz $ZK_RELEASE \
+    && wget -O /tmp/zookeeper.tgz $ZK_RELEASE \
+    && tar -xzf /tmp/zookeeper.tgz -C /opt/ \
+    && ln -s /opt/zookeeper-* /opt/zookeeper \
     && mkdir -p /opt/zookeeper/transactions /opt/zookeeper/snapshots \
-    && tar -xzf /tmp/zookeeper.tgz -C /opt/zookeeper --strip=1 \
     && rm /tmp/zookeeper.tgz \
 
     # Install Exhibitor
     && mkdir -p /opt/exhibitor \
-    && curl -Lo /opt/exhibitor/pom.xml $EXHIBITOR_POM \
+    && wget -O /opt/exhibitor/pom.xml $EXHIBITOR_POM \
     && mvn -f /opt/exhibitor/pom.xml package \
     && ln -s /opt/exhibitor/target/exhibitor*jar /opt/exhibitor/exhibitor.jar \
 
     # Remove build-time dependencies
-    && apt-get purge -y --auto-remove $BUILD_DEPS \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /opt/*maven* ~/.m2
 
 # Add the optional web.xml for authentication
 ADD web.xml /opt/exhibitor/web.xml
