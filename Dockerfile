@@ -1,8 +1,10 @@
 FROM anapsix/alpine-java:jdk8
 MAINTAINER Secret Sauce Partners, Inc. <operations@sspinc.io>
 
+ARG ZK_VERSION="3.4.8"
+
 ENV \
-    ZK_RELEASE="http://archive.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz" \
+    ZK_RELEASE="http://archive.apache.org/dist/zookeeper/zookeeper-${ZK_VERSION}/zookeeper-${ZK_VERSION}.tar.gz" \
     EXHIBITOR_POM="https://raw.githubusercontent.com/Netflix/exhibitor/44905c15/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml"
 
 # Use one step so we can remove intermediate dependencies and minimize size
@@ -15,7 +17,7 @@ RUN \
 
     # Install ZK
     && wget -O /tmp/zookeeper.tgz $ZK_RELEASE \
-    && tar -xzf /tmp/zookeeper.tgz -C /opt/ \
+    && tar -xvzf /tmp/zookeeper.tgz -C /opt/ \
     && ln -s /opt/zookeeper-* /opt/zookeeper \
     && mkdir -p /opt/zookeeper/transactions /opt/zookeeper/snapshots \
     && rm /tmp/zookeeper.tgz \

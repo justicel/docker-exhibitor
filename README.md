@@ -7,7 +7,7 @@ Available on the Docker Hub as [sspinc/exhibitor](https://index.docker.io/u/sspi
 ### Versions
 
 * Exhibitor 1.5.6
-* ZooKeeper 3.4.6
+* ZooKeeper 3.4.8
 
 ### Usage
 
