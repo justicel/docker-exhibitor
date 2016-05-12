@@ -33,14 +33,13 @@ RUN \
     && apt-get purge -y --auto-remove $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
-# Add the wrapper script to setup configs and exec exhibitor
-ADD include/wrapper.sh /opt/exhibitor/wrapper.sh
-
 # Add the optional web.xml for authentication
-ADD include/web.xml /opt/exhibitor/web.xml
+ADD web.xml /opt/exhibitor/web.xml
 
-USER root
+# Add entrypoint script
+ADD docker-entrypoint.sh /entrypoint.sh
+
 WORKDIR /opt/exhibitor
 EXPOSE 2181 2888 3888 8181
 
-ENTRYPOINT ["/opt/exhibitor/wrapper.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
