@@ -1,14 +1,16 @@
 Runs an [Exhibitor](https://github.com/Netflix/exhibitor)-managed [ZooKeeper](http://zookeeper.apache.org/) instance using S3 for backups and automatic node discovery.
 
-Available on the Docker Index as [mbabineau/zookeeper-exhibitor](https://index.docker.io/u/mbabineau/zookeeper-exhibitor/):
+Available on the Docker Hub as [sspinc/exhibitor](https://index.docker.io/u/sspinc/exhibitor/):
 
-    docker pull mbabineau/zookeeper-exhibitor
+    docker pull sspinc/exhibitor
 
 ### Versions
+
 * Exhibitor 1.5.5
 * ZooKeeper 3.4.6
 
 ### Usage
+
 The container expects the following environment variables to be passed in:
 
 * `HOSTNAME` - addressable hostname for this node (Exhibitor will forward users of the UI to this address)
@@ -33,7 +35,7 @@ Starting the container:
         -e AWS_ACCESS_KEY_ID=<access_key> \
         -e AWS_SECRET_ACCESS_KEY=<secret_key> \
         -e HOSTNAME=<host> \
-        mbabineau/zookeeper-exhibitor:latest
+        sspinc/exhibitor:1.5.5
 
 Once the container is up, confirm Exhibitor is running:
 
@@ -46,7 +48,8 @@ Once the container is up, confirm Exhibitor is running:
             "isLeader": true
         }
     ]
-_See Exhibitor's [wiki](https://github.com/Netflix/exhibitor/wiki/REST-Introduction) for more details on its REST API._
+
+See Exhibitor's [wiki](https://github.com/Netflix/exhibitor/wiki/REST-Introduction) for more details on its REST API.
 
 You can also check Exhibitor's web UI at `http://<host>:8181/exhibitor/v1/ui/index.html`
 
@@ -56,7 +59,9 @@ Then confirm ZK is available:
     imok
 
 ### AWS IAM Policy
-Exhibitor can also use an IAM Role attached to an instance instead of passing access or secret keys. This is an example policy that would be needed for the instance:
+
+Exhibitor can also use an IAM Role attached to an instance instead of passing access or secret keys.
+This is an example policy that would be needed for the instance:
 ```
 {
     "Statement": [
@@ -70,7 +75,6 @@ Exhibitor can also use an IAM Role attached to an instance instead of passing ac
                 "s3:DeleteObject",
                 "s3:GetBucketAcl",
                 "s3:GetBucketPolicy",
-                "s3:GetObject",
                 "s3:GetObject",
                 "s3:GetObjectAcl",
                 "s3:ListBucket",
@@ -91,4 +95,4 @@ Starting the container:
         -e S3_BUCKET=<bucket> \
         -e S3_PREFIX=<key_prefix> \
         -e HOSTNAME=<host> \
-        mbabineau/zookeeper-exhibitor:latest
+        sspinc/exhibitor:1.5.5
