@@ -22,6 +22,7 @@ The container expects the following environment variables to be passed in:
 * `ZK_PASSWORD` - (optional) the HTTP Basic Auth password for the "zk" user
 * `ZK_DATA_DIR` - (optional) Zookeeper data directory
 * `ZK_LOG_DIR` - (optional) Zookeeper log directory
+* `ZK_ENSEMBLE_SIZE` - (optional) Zookeeper fixed ensemble size
 * `HTTP_PROXY_HOST` - (optional) HTTP Proxy hostname
 * `HTTP_PROXY_PORT` - (optional) HTTP Proxy port
 * `HTTP_PROXY_USERNAME` - (optional) HTTP Proxy username
