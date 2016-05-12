@@ -1,11 +1,12 @@
 FROM anapsix/alpine-java:jdk8
 MAINTAINER Secret Sauce Partners, Inc. <operations@sspinc.io>
 
+ARG EXHIBITOR_SHA1="44905c15"
 ARG ZK_VERSION="3.4.8"
 
-ENV \
-    ZK_RELEASE="http://archive.apache.org/dist/zookeeper/zookeeper-${ZK_VERSION}/zookeeper-${ZK_VERSION}.tar.gz" \
-    EXHIBITOR_POM="https://raw.githubusercontent.com/Netflix/exhibitor/44905c15/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml"
+ENV ZK_RELEASE="http://archive.apache.org/dist/zookeeper/zookeeper-${ZK_VERSION}/zookeeper-${ZK_VERSION}.tar.gz" \
+    EXHIBITOR_POM="https://raw.githubusercontent.com/Netflix/exhibitor/${EXHIBITOR_SHA1}/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml" \
+    EXHIBITOR_VERSION="1.5.6"
 
 # Use one step so we can remove intermediate dependencies and minimize size
 RUN \
