@@ -14,6 +14,7 @@ Available on the Docker Hub as [sspinc/exhibitor](https://index.docker.io/u/sspi
 The container expects the following environment variables to be passed in:
 
 * `HOSTNAME` - addressable hostname for this node (Exhibitor will forward users of the UI to this address)
+* `S3_BACKUP` - (optional) backup transaction logs to S3 (defaults to `false`)
 * `S3_BUCKET` - (optional) bucket used by Exhibitor for backups and coordination
 * `S3_PREFIX` - (optional) key prefix within `S3_BUCKET` to use for this cluster
 * `AWS_ACCESS_KEY_ID` - (optional) AWS access key ID with read/write permissions on `S3_BUCKET`
@@ -31,6 +32,7 @@ The container expects the following environment variables to be passed in:
 Starting the container:
 
     docker run -p 8181:8181 -p 2181:2181 -p 2888:2888 -p 3888:3888 \
+        -e S3_BACKUP=true \
         -e S3_BUCKET=<bucket> \
         -e S3_PREFIX=<key_prefix> \
         -e AWS_ACCESS_KEY_ID=<access_key> \
@@ -93,6 +95,7 @@ This is an example policy that would be needed for the instance:
 Starting the container:
 
     docker run -p 8181:8181 -p 2181:2181 -p 2888:2888 -p 3888:3888 \
+        -e S3_BACKUP=true \
         -e S3_BUCKET=<bucket> \
         -e S3_PREFIX=<key_prefix> \
         -e HOSTNAME=<host> \
