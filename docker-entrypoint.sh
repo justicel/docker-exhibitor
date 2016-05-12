@@ -75,23 +75,10 @@ EOF
     HTTP_PROXY="--s3proxy=/opt/exhibitor/proxy.properties"
 fi
 
-
-exec 2>&1
-
-# If we use exec and this is the docker entrypoint, Exhibitor fails to kill the ZK process on restart.
-# If we use /bin/bash as the entrypoint and run wrapper.sh by hand, we do not see this behavior. I suspect
-# some init or PID-related shenanigans, but I'm punting on further troubleshooting for now since dropping
-# the "exec" fixes it.
-#
-# exec java -jar /opt/exhibitor/exhibitor.jar \
-# 	--port 8181 --defaultconfig /opt/exhibitor/defaults.conf \
-# 	--configtype s3 --s3config thefactory-exhibitor:${CLUSTER_ID} \
-# 	--s3credentials /opt/exhibitor/credentials.properties \
-# 	--s3region us-west-2 --s3backup true
-
-java -jar /opt/exhibitor/exhibitor.jar \
-  --port 8181 --defaultconfig /opt/exhibitor/defaults.conf \
+exec java -jar /opt/exhibitor/exhibitor.jar \
+  --defaultconfig /opt/exhibitor/defaults.conf \
+  --hostname ${HOSTNAME} \
+  --port 8181  \
   ${BACKUP_CONFIG} \
   ${HTTP_PROXY} \
-  --hostname ${HOSTNAME} \
   ${SECURITY}
