@@ -38,6 +38,6 @@ ADD web.xml /opt/exhibitor/web.xml
 ADD docker-entrypoint.sh /entrypoint.sh
 
 WORKDIR /opt/exhibitor
-EXPOSE 2181 2888 3888 8181
+EXPOSE 2181 2888 3888 8181 8250
 
 ENTRYPOINT ["/entrypoint.sh"]

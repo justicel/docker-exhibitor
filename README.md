@@ -94,7 +94,7 @@ This is an example policy that would be needed for the instance:
 
 Starting the container:
 
-    docker run -p 8181:8181 -p 2181:2181 -p 2888:2888 -p 3888:3888 \
+    docker run -p 8181:8181 -p 2181:2181 -p 2888:2888 -p 3888:3888 -p 8250:8250 \
         -e S3_BACKUP=true \
         -e S3_BUCKET=<bucket> \
         -e S3_PREFIX=<key_prefix> \

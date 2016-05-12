@@ -38,6 +38,7 @@ cat <<- EOF > /opt/exhibitor/defaults.conf
 	auto-manage-instances-settling-period-ms=0
 	auto-manage-instances=1
 	auto-manage-instances-fixed-ensemble-size=$ZK_ENSEMBLE_SIZE
+    java-environment=SERVER_JVMFLAGS\="\$SERVER_JVMFLAGS -server -Xmx1G -Dcom.sun.management.jmxremote.authenticate\=false -Dcom.sun.management.jmxremote.ssl\=false -Dcom.sun.management.jmxremote.port\=8250 -Dcom.sun.management.jmxremote.rmi.port\=8250 -Djava.rmi.server.hostname\=\$HOSTNAME"
 EOF
 
 
