@@ -79,6 +79,7 @@ java -jar /opt/exhibitor/exhibitor.jar \
   --defaultconfig /opt/exhibitor/defaults.conf \
   --hostname ${HOSTNAME} \
   --port 8181  \
+  --zkconfigretry 2000:10 \
   ${BACKUP_CONFIG} \
   ${HTTP_PROXY} \
   ${SECURITY}

@@ -1,17 +1,19 @@
 FROM anapsix/alpine-java:jdk8
 MAINTAINER Secret Sauce Partners, Inc. <operations@sspinc.io>
 
-ARG EXHIBITOR_SHA1="44905c15"
-ARG ZK_VERSION="3.4.8"
+ARG EXHIBITOR_VERSION="1.7.0"
+ARG ZK_VERSION="3.4.10"
 
 ENV ZK_RELEASE="http://archive.apache.org/dist/zookeeper/zookeeper-${ZK_VERSION}/zookeeper-${ZK_VERSION}.tar.gz" \
-    EXHIBITOR_POM="https://raw.githubusercontent.com/Netflix/exhibitor/${EXHIBITOR_SHA1}/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml" \
-    EXHIBITOR_VERSION="1.5.6"
+    EXHIBITOR_POM="https://raw.githubusercontent.com/soabase/exhibitor/exhibitor-${EXHIBITOR_VERSION}/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml"
 
 # Use one step so we can remove intermediate dependencies and minimize size
 RUN \
+    apk update \
+    && apk upgrade \
+    && apk add openssl \
     # Install maven
-    wget -O /opt/apache-maven.zip 'http://www.us.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip' \
+    && wget -O /opt/apache-maven.zip 'http://www.us.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip' \
     && unzip -d /opt/ /opt/apache-maven.zip \
     && ln -s /opt/apache-maven-3.3.9 /opt/maven \
     && ln -s /opt/maven/bin/mvn /usr/bin \
